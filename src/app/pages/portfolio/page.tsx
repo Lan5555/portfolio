@@ -138,21 +138,18 @@ type ThemeType = 'dark' | 'light';
 const Portfolio: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [theme, setTheme] = useState<ThemeType>('dark');
-  const [profileImage, setProfileImage] = useState<string>('/pic.jpeg');
+  const profileImage = '/pic.jpeg';
   const [isNavSticky, setIsNavSticky] = useState<boolean>(false);
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
-  const [projectMedias, setProjectMedias] = useState<{ [key: number]: string }>({
+  const projectMedias: { [key: number]: string } = {
     0: '/nacos.png',
     1: '/game.png',
     2: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=800',
-  });
-  const [projectMediaTypes, setProjectMediaTypes] = useState<{ [key: number]: 'image' | 'video' }>({
+  };
+  const projectMediaTypes: { [key: number]: 'image' | 'video' } = {
     0: 'image', 1: 'image', 2: 'image'
-  });
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  };
   const [requestStatus, setRequestStatus] = useState<'IDLE' | 'SENDING' | 'SUCCESS'>('IDLE');
-  const projectMediaInputRef = useRef<HTMLInputElement>(null);
-  const [activeProjectForMedia, setActiveProjectForMedia] = useState<number | null>(null);
   const [formData, setFormData] = useState({
     name: "Your Name",
     email: "hello@example.com",
@@ -184,39 +181,6 @@ const Portfolio: React.FC = () => {
 
   const toggleTheme = () => {
     setTheme(isDark ? 'light' : 'dark');
-  };
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setProfileImage(event.target?.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleProjectMediaUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file && activeProjectForMedia !== null) {
-      const reader = new FileReader();
-      const isVideo = file.type.startsWith('video/');
-      const isImage = file.type.startsWith('image/');
-
-      reader.onload = (event) => {
-        const data = event.target?.result as string;
-        setProjectMedias(prev => ({
-          ...prev,
-          [activeProjectForMedia]: data
-        }));
-        setProjectMediaTypes(prev => ({
-          ...prev,
-          [activeProjectForMedia]: isVideo ? 'video' : isImage ? 'image' : 'image'
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   const handleSendRequest = (e: React.FormEvent) => {
@@ -442,26 +406,10 @@ const Portfolio: React.FC = () => {
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                   ) : (
-                    <div className={`w-full h-full flex items-center justify-center transition-all ${isDark ? 'bg-slate-800' : 'bg-slate-100'}`}>
-                      <div className="text-center">
-                        <div className="text-6xl mb-2 group-hover:scale-125 transition-transform">📸</div>
-                        <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Click to add photo</p>
-                      </div>
+                    <div className={`w-full h-full flex items-center justify-center ${isDark ? 'bg-slate-800' : 'bg-slate-100'}`}>
+                      <ImageIcon size={48} className="opacity-20" />
                     </div>
                   )}
-                  <button
-                    onClick={() => fileInputRef.current?.click()}
-                    className="absolute inset-0 opacity-0 hover:opacity-100 bg-black/50 flex items-center justify-center transition-opacity cursor-pointer backdrop-blur-sm"
-                  >
-                    <span className="text-white font-semibold">Upload Photo</span>
-                  </button>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                  />
                 </div>
               </div>
 
@@ -567,12 +515,6 @@ const Portfolio: React.FC = () => {
                     ) : (
                       <div className="w-full h-full flex flex-col items-center justify-center gap-2">
                         <ImageIcon size={32} className="opacity-20" />
-                        <button 
-                          onClick={() => { setActiveProjectForMedia(idx); projectMediaInputRef.current?.click(); }}
-                          className="text-xs font-bold px-3 py-1.5 rounded-full bg-cyan-500/10 text-cyan-500 hover:bg-cyan-500 hover:text-white transition-all"
-                        >
-                          Add Preview
-                        </button>
                       </div>
                     )}
                   </div>
@@ -607,13 +549,6 @@ const Portfolio: React.FC = () => {
                 </div>
               ))}
           </div>
-          <input
-            ref={projectMediaInputRef}
-            type="file"
-            accept="image/*,video/*"
-            onChange={handleProjectMediaUpload}
-            className="hidden"
-          />
           {/* Project Stats */}
           <div className={`grid md:grid-cols-3 gap-6 mt-16 p-8 rounded-xl ${isDark ? 'bg-linear-to-r from-slate-800/50 to-slate-900/50 border-slate-700' : 'bg-linear-to-r from-slate-50 to-slate-100 border-slate-200'} border`}>
             {[
