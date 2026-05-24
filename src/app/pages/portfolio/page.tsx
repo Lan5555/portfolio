@@ -719,7 +719,7 @@ const Portfolio: React.FC = () => {
             </div>
 
             <div className="p-6 space-y-6">
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <div className={`px-3 py-2 rounded font-mono text-sm font-bold ${isDark ? 'bg-green-500/20 text-green-400' : 'bg-green-100 text-green-700'}`}>POST</div>
                 <div className={`flex-1 px-3 py-2 rounded font-mono text-sm border ${isDark ? 'bg-slate-950 border-slate-700 text-slate-300' : 'bg-white border-slate-300 text-slate-700'}`}>
                   https://nicholas.dev/contact
@@ -727,7 +727,7 @@ const Portfolio: React.FC = () => {
                 <button 
                   onClick={handleSendRequest}
                   disabled={requestStatus !== 'IDLE'}
-                  className="px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded transition-colors disabled:opacity-50"
+                  className="w-full sm:w-auto px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded transition-colors disabled:opacity-50"
                 >
                   {requestStatus === 'SENDING' ? 'SENDING...' : 'SEND'}
                 </button>
@@ -740,37 +740,37 @@ const Portfolio: React.FC = () => {
                   <span className="text-xs font-bold text-slate-500">Auth</span>
                 </div>
                 
-                <div className={`p-4 rounded font-mono text-sm min-h-37.5 ${isDark ? 'bg-slate-950 text-cyan-400' : 'bg-white text-blue-600 border border-slate-200'}`}>
+                <div className={`p-4 rounded font-mono text-[10px] sm:text-sm min-h-37.5 overflow-x-auto ${isDark ? 'bg-slate-950 text-cyan-400' : 'bg-white text-blue-600 border border-slate-200'}`}>
                   <div className="opacity-50">{"{"}</div>
-                  <div className="pl-4 space-y-1">
+                  <div className="pl-2 sm:pl-4 space-y-1">
                     <div>
                       <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>"name":</span> 
-                      <input 
-                        className="bg-transparent border-none outline-none ml-2 w-1/2" 
+                      <input
+                        className="bg-transparent border-none outline-none ml-2 w-[60%]" 
                         value={formData.name} 
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
                       />,
                     </div>
                     <div>
                       <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>"email":</span> 
-                      <input 
-                        className="bg-transparent border-none outline-none ml-2 w-1/2" 
+                      <input
+                        className="bg-transparent border-none outline-none ml-2 w-[60%]" 
                         value={formData.email} 
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
                       />,
                     </div>
                     <div>
                       <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>"subject":</span> 
-                      <input 
-                        className="bg-transparent border-none outline-none ml-2 w-1/2" 
+                      <input
+                        className="bg-transparent border-none outline-none ml-2 w-[60%]" 
                         value={formData.subject} 
                         onChange={(e) => setFormData({...formData, subject: e.target.value})}
                       />,
                     </div>
                     <div>
                       <span className={isDark ? 'text-slate-400' : 'text-slate-500'}>"message":</span> 
-                      <input 
-                        className="bg-transparent border-none outline-none ml-2 w-1/2" 
+                      <input
+                        className="bg-transparent border-none outline-none ml-2 w-[60%]" 
                         value={formData.message} 
                         onChange={(e) => setFormData({...formData, message: e.target.value})}
                       />,
