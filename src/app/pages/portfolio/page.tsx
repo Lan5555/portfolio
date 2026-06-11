@@ -139,12 +139,30 @@ const Portfolio: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [theme, setTheme] = useState<ThemeType>('dark');
   const profileImage = '/pic.jpeg';
+  const [toast, setToast] = useState<string | null>(null);
   const [isNavSticky, setIsNavSticky] = useState<boolean>(false);
   const [selectedProject, setSelectedProject] = useState<number | null>(null);
+  const [displayText, setDisplayText] = useState('');
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const fullText = "Nicholas Johnson";
+
+  useEffect(() => {
+    let i = 0;
+    const timer = setInterval(() => {
+      setDisplayText(fullText.slice(0, i));
+      i++;
+      if (i > fullText.length) clearInterval(timer);
+    }, 100);
+    return () => clearInterval(timer);
+  }, []);
+
   const projectMedias: { [key: number]: string } = {
     0: '/nacos.png',
     1: '/game.png',
     2: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=800',
+    3: '/quiz.png',
+    4: 'fuse2.png',
+    5: 'plus2.png'
   };
   const projectMediaTypes: { [key: number]: 'image' | 'video' } = {
     0: 'image', 1: 'image', 2: 'image'
@@ -183,6 +201,11 @@ const Portfolio: React.FC = () => {
     setTheme(isDark ? 'light' : 'dark');
   };
 
+  const showToast = (message: string) => {
+    setToast(message);
+    setTimeout(() => setToast(null), 3000);
+  };
+
   const handleSendRequest = (e: React.FormEvent) => {
     e.preventDefault();
     if (requestStatus !== 'IDLE') return;
@@ -202,7 +225,7 @@ const Portfolio: React.FC = () => {
   const skills: SkillGroup[] = [
     { category: 'Frontend', items: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Three.js','Nite'] },
     { category: 'Backend', items: ['Go', 'Node.js', 'Nest.js', 'Express', 'Socket.io', 'REST APIs'] },
-    { category: 'Mobile', items: ['Flutter', 'Android', 'Cross-platform','React Native'] },
+    { category: 'Mobile', items: ['Flutter', 'Android', 'Cross-platform','React Native', 'Java'] },
     { category: 'Game Dev', items: ['C++', 'Unity', 'Unreal Engine', 'Blender', 'C#'] },
   ];
 
@@ -227,7 +250,7 @@ const Portfolio: React.FC = () => {
       name: 'Dawn of Alchemy',
       description: 'Narrative-driven tragedy RPG with deep storytelling, multiple acts, and emotional plot twists.',
       longDescription: 'An immersive narrative-driven RPG inspired by NieR Replicant and Clair Obscur: Expedition 33. Features complex story arcs, romance systems, multiple acts with branching narratives, stunning visual design, and emotional storytelling that spans 40+ hours of gameplay.',
-      tags: ['Game Dev', 'C++', 'Story Design','Unity'],
+      tags: ['Game Dev', 'C++', 'Story Design','Unity','C#','Blender'],
       color: 'from-purple-500 to-pink-500',
       icon: '⚔️',
       link: '#',
@@ -241,6 +264,34 @@ const Portfolio: React.FC = () => {
       icon: '🧪',
       link: '#',
     },
+    {
+      name: "Lan's Hub",
+      description: 'Interactive Learning Platform for Students',
+      longDescription: 'A comprehensive educational hub designed for students, featuring interactive learning modules, resource management, and a collaborative environment.',
+      tags: ['Next.js', 'Nest.js', 'PostgressSQL', 'Real-time'],
+      color: 'from-emerald-500 to-teal-500',
+      icon: '📚',
+      link: 'https://test-app-sandy-one.vercel.app/',
+    },
+    {
+      name: "Fuse Go App",
+      description: 'Begin your cooperative digital journey here.',
+      longDescription: 'An innovative platform designed to foster collaboration and creativity, providing users with tools and resources to embark on their cooperative digital journey.',
+      tags: ['Flutter', 'Nest.js', 'MySql'],
+      color: 'from-emerald-500 to-teal-500',
+      icon: '🚀',
+      link: 'https://play.google.com/store/apps/details?id=com.techfusion.fuse&pcampaignid=web_share',
+    },
+    {
+      name: "30 Plus Agents",
+      description: 'Grow your savings the right way on 30+',
+      longDescription: 'Track your savings collection in real time. Stay organized with a clear easy-to-use dashboard for managing accounts.',
+      tags: ['Flutter', 'Nest.js', 'MySql'],
+      color: 'from-emerald-500 to-teal-500',
+      icon: '💰',
+      link: 'https://play.google.com/store/apps/details?id=com.techfusion.thirty_plus&pcampaignid=web_share',
+    },
+    
   ];
 
   return (
@@ -319,8 +370,9 @@ const Portfolio: React.FC = () => {
                   Welcome to my portfolio
                 </span>
               </div>
-              <h1 className="text-6xl md:text-7xl font-bold leading-tight group hover:text-transparent hover:bg-clip-text hover:bg-linear-to-r hover:from-cyan-400 hover:to-blue-500 transition-all duration-500">
-                Nicholas Johnson
+              <h1 className="text-6xl md:text-7xl font-bold leading-tight group hover:text-transparent hover:bg-clip-text hover:bg-linear-to-r hover:from-cyan-400 hover:to-blue-500 transition-all duration-500 min-h-[1.2em]">
+                {displayText}
+                <span className="inline-block w-1 h-12 md:h-16 ml-2 bg-cyan-400 animate-blink"></span>
               </h1>
               <p className={`text-xl leading-relaxed transition-all duration-300 ${isDark ? 'text-slate-400 group-hover:text-slate-300' : 'text-slate-600 group-hover:text-slate-700'}`}>
                 Full-stack engineer crafting scalable web platforms, high-performance backend systems, cross-platform mobile applications, immersive 3D experiences, and interactive game systems. Passionate about performance-focused architecture, real-time technologies, mobile development with Flutter, backend engineering, and interactive storytelling.
@@ -396,11 +448,21 @@ const Portfolio: React.FC = () => {
             {/* Profile Image + Achievements */}
             <div className="space-y-8">
               {/* Profile Image Section */}
-              <div className="relative group">
-                <div className={`absolute -inset-1 bg-linear-to-r from-cyan-500 to-blue-500 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500`} />
-                <div className={`relative w-64 h-64 mx-auto rounded-2xl overflow-hidden border-2 transition-all duration-300 ${isDark ? 'border-cyan-500/30 group-hover:border-cyan-400 bg-slate-800' : 'border-cyan-400/30 group-hover:border-cyan-500 bg-slate-100'}`}>
+              <div className="flex justify-center -mb-4">
+                <div className={`px-4 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase border animate-bounce ${isDark ? 'bg-slate-900 text-cyan-400 border-cyan-500/30' : 'bg-white text-cyan-600 border-cyan-200 shadow-sm'}`}>
+                  The Architect
+                </div>
+              </div>
+              
+              <div className="relative group w-72 h-72 mx-auto">
+                <div className={`absolute -inset-4 bg-linear-to-tr from-cyan-500 via-blue-600 to-purple-600 rounded-full blur-2xl opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:animate-spin-slow`} />
+                <div className={`absolute inset-0 bg-linear-to-r from-cyan-500 to-blue-500 rounded-3xl rotate-6 group-hover:rotate-12 transition-transform duration-500 opacity-20`} />
+                <div className={`absolute inset-0 bg-linear-to-l from-purple-500 to-cyan-500 rounded-3xl -rotate-6 group-hover:-rotate-12 transition-transform duration-500 opacity-20`} />
+                
+                <div className={`relative w-full h-full rounded-2xl overflow-hidden border-2 transition-all duration-500 ${isDark ? 'border-cyan-500/30 group-hover:border-cyan-400 bg-slate-800' : 'border-cyan-400/30 group-hover:border-cyan-500 bg-slate-100'} z-10 shadow-2xl`}>
                   {profileImage ? (
                     <img
+                      onClick={() => setIsProfileModalOpen(true)}
                       src={profileImage}
                       alt="Profile"
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
@@ -411,6 +473,11 @@ const Portfolio: React.FC = () => {
                     </div>
                   )}
                 </div>
+                
+                {/* Decorative Elements */}
+                <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-cyan-500/10 rounded-full blur-xl animate-pulse" />
+                <div className="absolute -top-4 -left-4 w-24 h-24 bg-blue-500/10 rounded-full blur-xl animate-pulse delay-700" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border border-cyan-500/10 rounded-full scale-0 group-hover:scale-100 transition-transform duration-1000" />
               </div>
 
               {/* Skill Cards */}
@@ -493,6 +560,7 @@ const Portfolio: React.FC = () => {
               {projects.map((project, idx) => (
                 <div
                   key={idx}
+                  onClick={() => setSelectedProject(idx)}
                   onMouseEnter={() => {
                     if (audioRef.current && project.name === 'Dawn of Alchemy') audioRef.current.play().catch(() => {});
                   }}
@@ -502,7 +570,7 @@ const Portfolio: React.FC = () => {
                       audioRef.current.currentTime = 0;
                     }
                   }}
-                  className={`group relative rounded-2xl overflow-hidden transition-all duration-500 ${isDark ? 'bg-slate-900 border-slate-800 hover:border-cyan-500/80 shadow-lg hover:shadow-cyan-500/10' : 'bg-slate-50 border-slate-200 hover:border-cyan-400 shadow-md'} border`}
+                  className={`group relative rounded-2xl overflow-hidden transition-all duration-500 cursor-pointer ${isDark ? 'bg-slate-900 border-slate-800 hover:border-cyan-500/80 shadow-lg hover:shadow-cyan-500/10' : 'bg-slate-50 border-slate-200 hover:border-cyan-400 shadow-md'} border`}
                 >
                   {/* Project Image Space */}
                   <div className={`relative h-52 w-full overflow-hidden ${isDark ? 'bg-slate-800' : 'bg-slate-200'}`}>
@@ -527,7 +595,14 @@ const Portfolio: React.FC = () => {
                   <div className="p-8 relative">
                     <h3 className="text-2xl font-bold mb-3 flex items-center gap-2">
                       {project.name}
-                      <ExternalLink size={20} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <ExternalLink size={20} className="opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer" onClick={(e) => {
+                        e.stopPropagation();
+                        if(project.link === '#'){
+                           showToast('No preview available for this project');
+                           return;
+                        }
+                        window.open(project.link, '_blank', 'noopener,noreferrer');
+                      }} />
                     </h3>
                     <p className={`mb-6 leading-relaxed transition-all duration-300 text-sm ${isDark ? 'text-slate-400 group-hover:text-slate-300' : 'text-slate-600 group-hover:text-slate-700'}`}>
                       {project.description}
@@ -759,6 +834,70 @@ const Portfolio: React.FC = () => {
           <p>© {new Date().getFullYear()} Nicholas Johnson. All rights reserved.</p>
         </div>
       </footer>
+
+      {/* Project Modal */}
+      {selectedProject !== null && (
+        <div className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in" onClick={() => setSelectedProject(null)}>
+          <div 
+            className={`relative max-w-2xl w-full rounded-2xl overflow-hidden shadow-2xl ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'} border`}
+            onClick={e => e.stopPropagation()}
+          >
+            <button 
+              onClick={() => setSelectedProject(null)}
+              className={`absolute top-4 right-4 p-2 rounded-full z-10 ${isDark ? 'bg-slate-800 text-white hover:bg-slate-700' : 'bg-slate-100 text-slate-900 hover:bg-slate-200'}`}
+            >
+              <X size={20} />
+            </button>
+            
+            <div className="h-64 w-full overflow-hidden">
+              <img 
+                src={projectMedias[selectedProject]} 
+                alt={projects[selectedProject].name} 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            
+            <div className="p-8">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-4xl">{projects[selectedProject].icon}</span>
+                <h3 className="text-3xl font-bold">{projects[selectedProject].name}</h3>
+              </div>
+              <p className={`text-lg leading-relaxed mb-6 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                {projects[selectedProject].longDescription}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {projects[selectedProject].tags.map((tag, i) => (
+                  <span key={i} className={`px-3 py-1 text-sm rounded-full ${isDark ? 'bg-slate-800 text-cyan-400' : 'bg-cyan-100 text-cyan-700'}`}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Profile Photo Modal */}
+      {isProfileModalOpen && (
+        <div className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-fade-in" onClick={() => setIsProfileModalOpen(false)}>
+          <div className="relative max-w-md w-full aspect-square rounded-2xl overflow-hidden border-2 border-cyan-500/50 shadow-2xl shadow-cyan-500/20">
+            <button 
+              onClick={() => setIsProfileModalOpen(false)}
+              className="absolute top-4 right-4 p-2 rounded-full z-10 bg-black/50 text-white hover:bg-black/70 transition-colors"
+            >
+              <X size={24} />
+            </button>
+            <img src={'/dark.png'} alt="Nicholas Johnson" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      )}
+
+      {/* Toast Notification */}
+      {toast && (
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-110 px-6 py-3 rounded-full bg-slate-900 text-white border border-cyan-500/50 shadow-lg shadow-cyan-500/20 animate-slideDown">
+          {toast}
+        </div>
+      )}
 
       {/* Global Styles */}
       <style>{`
