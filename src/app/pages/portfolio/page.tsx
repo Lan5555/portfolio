@@ -231,8 +231,8 @@ const Portfolio: React.FC = () => {
 
   const experience = [
     { year: '2025 - Present', role: 'Software Engineer', company: 'Techfusion Africa', desc: 'Building scalable and high tech applications.' },
-    { year: '2023 - 2025', role: 'Game Developer', company: "Lan's Enterprise", desc: 'Developed core gameplay mechanics and optimized 3D rendering pipelines for indie titles.' },
-    { year: '2021 - 2023', role: 'Frontend Developer', company: "Lan's Enterprise", desc: 'Built responsive web applications and interactive marketing experiences for global brands.' },
+    { year: '2023 - 2025', role: 'Game Developer', company: "Lan's Interactive", desc: 'Developed core gameplay mechanics and optimized 3D rendering pipelines for indie titles.' },
+    { year: '2021 - 2023', role: 'Frontend Developer', company: "Lan's Interactive", desc: 'Built responsive web applications and interactive marketing experiences for global brands.' },
   ];
 
 
